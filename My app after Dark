@@ -1,0 +1,108 @@
+function showSignup() {
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('signup').classList.remove('hidden');
+}
+
+function showLogin() {
+  document.getElementById('signup').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+}
+
+function login() {
+  const email = document.getElementById('email').value;
+  document.getElementById('username').innerText = email.split('@')[0];
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('profile').classList.remove('hidden');
+}
+
+function signup() {
+  const name = document.getElementById('name').value;
+  document.getElementById('username').innerText = name;
+  document.getElementById('signup').classList.add('hidden');
+  document.getElementById('profile').classList.remove('hidden');
+}
+
+function getLocation() {
+  const locationP = document.getElementById('location');
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      locationP.innerText = `Lat: ${position.coords.latitude}, Lon: ${position.coords.longitude}`;
+    }, () => {
+      locationP.innerText = "Unable to fetch location.";
+    });
+  } else {
+    locationP.innerText = "Geolocation not supported.";
+  }
+}
+
+function showChat() {
+  document.getElementById('profile').classList.add('hidden');
+  document.getElementById('chat').classList.remove('hidden');
+}
+
+function sendMessage() {
+  const msg = document.getElementById('message').value;
+  if (msg.trim() === '') return;
+
+  const chatBox = document.getElementById('chatBox');
+  const newMsg = document.createElement('p');
+  newMsg.innerText = msg;
+  chatBox.appendChild(newMsg);
+  document.getElementById('message').value = '';
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>After Dark</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-gray-800 p-4 text-center text-xl font-bold">After Dark</nav>
+
+  <!-- Login Section -->
+  <section id="login" class="p-4 max-w-md mx-auto mt-10 bg-gray-800 rounded-xl shadow-lg">
+    <h2 class="text-2xl mb-4 text-center">Login</h2>
+    <input type="email" id="email" placeholder="Email" class="w-full p-2 mb-4 rounded bg-gray-700" />
+    <input type="password" id="password" placeholder="Password" class="w-full p-2 mb-4 rounded bg-gray-700" />
+    <button onclick="login()" class="bg-pink-500 w-full p-2 rounded hover:bg-pink-600">Login</button>
+    <p class="text-center mt-4 text-sm">Don't have an account? <a href="#" onclick="showSignup()" class="text-pink-400">Sign up</a></p>
+  </section>
+
+  <!-- Signup Section -->
+  <section id="signup" class="p-4 max-w-md mx-auto mt-10 bg-gray-800 rounded-xl shadow-lg hidden">
+    <h2 class="text-2xl mb-4 text-center">Signup</h2>
+    <input type="text" id="name" placeholder="Full Name" class="w-full p-2 mb-4 rounded bg-gray-700" />
+    <input type="email" id="signupEmail" placeholder="Email" class="w-full p-2 mb-4 rounded bg-gray-700" />
+    <input type="password" id="signupPassword" placeholder="Password" class="w-full p-2 mb-4 rounded bg-gray-700" />
+    <button onclick="signup()" class="bg-pink-500 w-full p-2 rounded hover:bg-pink-600">Sign up</button>
+    <p class="text-center mt-4 text-sm">Already have an account? <a href="#" onclick="showLogin()" class="text-pink-400">Login</a></p>
+  </section>
+
+  <!-- Profile Page -->
+  <section id="profile" class="p-4 max-w-md mx-auto mt-10 bg-gray-800 rounded-xl shadow-lg hidden">
+    <h2 class="text-2xl mb-4 text-center">Welcome, <span id="username">User</span></h2>
+    <div class="mb-4">
+      <label class="block mb-2">Location:</label>
+      <button onclick="getLocation()" class="bg-blue-500 px-4 py-2 rounded">Find My Location</button>
+      <p id="location" class="mt-2"></p>
+    </div>
+    <button onclick="showChat()" class="bg-pink-500 px-4 py-2 w-full rounded">Go to Chat</button>
+  </section>
+
+  <!-- Chat Page -->
+  <section id="chat" class="p-4 max-w-md mx-auto mt-10 bg-gray-800 rounded-xl shadow-lg hidden">
+    <h2 class="text-2xl mb-4 text-center">Chat</h2>
+    <div class="h-64 overflow-y-scroll bg-gray-700 p-4 mb-4 rounded" id="chatBox">
+      <p class="mb-2">Hi there! How can I help you?</p>
+    </div>
+    <input type="text" id="message" placeholder="Type a message..." class="w-full p-2 rounded bg-gray-700 mb-2" />
+    <button onclick="sendMessage()" class="bg-pink-500 px-4 py-2 w-full rounded">Send</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
